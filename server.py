@@ -1,17 +1,20 @@
-import socket
+#!/usr/bin/env python
 
-HOST = "0.0.0.0"  # Standard loopback interface address (localhost)
-PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
+"""Echo server using the asyncio API."""
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))
-    s.listen()
-    while True:
-        conn, addr = s.accept()
-        with conn:
-            print(f"Connected by {addr}")
-            while True:
-                data = conn.recv(1024)
-                if not data:
-                    break
-                conn.sendall(data)
+import asyncio
+from websockets.asyncio.server import serve
+
+
+async def echo(websocket):
+    async for message in websocket:
+        await websocket.send(message)
+
+
+async def main():
+    async with serve(echo, "0.0.0.0", 65432) as server:
+        await server.serve_forever()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
