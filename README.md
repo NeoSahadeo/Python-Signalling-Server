@@ -34,6 +34,12 @@ This will keep a connection open on which the client can send messages. Once ope
 ### Disconnecting from a room / Disconnecting a client
 
 To do this, the client has to send a disconnect signal from the their socket or simply close the active application.
+
+#### Cleaning Rooms
+
+In the `server.py` file there is a setting called `CLEAN = 60`. This is the time in seconds for the interval of time the server checks all room sessions for vacant room (0 connections) and remove these from the list. This helps free rooms for other clients.
+
+
 ## Authors
 
 - [@NeoSahadeo](https://www.github.com/NeoSahadeo)

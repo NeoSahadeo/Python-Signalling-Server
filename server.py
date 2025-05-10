@@ -7,6 +7,20 @@ from websockets.asyncio.server import serve
 HOST = "0.0.0.0"
 PORT = 25565
 ROOMS = {}
+CLEAN = 60  # Seconds
+
+
+async def clean_rooms():
+    while True:
+        print('Cleaning Vacant Rooms')
+        empty_rooms = []
+        for x in ROOMS:
+            if len(ROOMS[x]["connections"]) == 0:
+                empty_rooms.append(x)
+        for x in empty_rooms:
+            ROOMS.pop(x)
+        print(ROOMS)
+        await asyncio.sleep(CLEAN)
 
 
 def dump_json(obj):
@@ -95,6 +109,8 @@ async def main():
     async with serve(handler, HOST, PORT):
         print(f"Signalling Server Started on {HOST}:{PORT}")
         print("Listening for connections...")
+        asyncio.create_task(clean_rooms())
+
         await asyncio.Future()
 
 if __name__ == "__main__":
