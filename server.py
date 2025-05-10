@@ -19,7 +19,6 @@ async def clean_rooms():
                 empty_rooms.append(x)
         for x in empty_rooms:
             ROOMS.pop(x)
-        print(ROOMS)
         await asyncio.sleep(CLEAN)
 
 
@@ -70,7 +69,7 @@ async def resolve_path(websocket, message):
             if room_id:
                 await websocket.send(json.dumps({"room_id": generate_room(websocket, room_id)}))
             else:
-                await websocket.send(json.dumps({"id": "null"}))
+                await websocket.send(json.dumps({"room_id": generate_room(websocket, room_id)}))
             await websocket.close()
 
         case "/client_endpoint":
