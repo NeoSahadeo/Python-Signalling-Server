@@ -73,7 +73,7 @@ async def resolve_path(websocket, message):
             if room_id:
                 await websocket.send(json.dumps({"room_id": generate_room(websocket, room_id)}))
             else:
-                await websocket.send(json.dumps({"room_id": generate_room(websocket, room_id)}))
+                await websocket.send(json.dumps({"room_id": generate_room(websocket)}))
             await websocket.close()
 
         case "/client_endpoint":
