@@ -1,13 +1,17 @@
+import ssl
 import json
 import uuid
 import asyncio
 from websockets import ConnectionClosed
 from websockets.asyncio.server import serve
 
-HOST = "0.0.0.0"
+HOST = "localhost"
 PORT = 25565
 ROOMS = {}
 CLEAN = 60  # Seconds
+SECURE = False
+CERT = "cert.pem"
+KEY = "key.pem"
 
 
 async def clean_rooms():
@@ -105,7 +109,12 @@ async def handler(websocket):
 
 
 async def main():
-    async with serve(handler, HOST, PORT):
+    ssl_context = None
+    if SECURE:
+        ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        ssl_context.load_cert_chain(certfile="cert.pem", keyfile="key.pem")
+
+    async with serve(handler, HOST, PORT, ssl=ssl_context):
         print(f"Signalling Server Started on {HOST}:{PORT}")
         print("Listening for connections...")
         asyncio.create_task(clean_rooms())
