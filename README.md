@@ -25,7 +25,7 @@ The connection will immediately be closed because the only function of the endpo
 
 To connect to a room one should use the `ws://[URI]/client_endpoint` and send a room id message.
 
-If the room exists, a message will be send back to the client with a status, eg: `{"connection": true}` if successful.
+If the room exists, a message will be send back to the client with a status, eg: `{"connected": true}` if successful.
 
 #### Messaging
 
